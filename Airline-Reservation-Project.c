@@ -8,100 +8,100 @@ using namespace std;
 
 // A structure to represent a flight
 struct Flight {
-    string flight_number; // The flight number
-    string origin; // The origin of the flight
-    string destination; // The destination of the flight
-    int capacity; // The maximum number of passengers
-    int booked; // The number of passengers already booked
-    double price; // The price of the ticket
+    string flight_number; 
+    string origin; 
+    string destination; 
+    int capacity; 
+    int booked; 
+    double price; 
 };
 
 // A structure to represent a user
 struct User {
-    string name; // The name of the user
-    string email; // The email of the user
-    string password; // The password of the user
-    vector<string> tickets; // The tickets booked by the user
+    string name; 
+    string email; 
+    string password; 
+    vector<string> tickets; 
 };
 
 // A function to check if a user exists in the file
 bool user_exists(string email) {
-    ifstream file("users.txt"); // Open the file for reading
-    if (file.is_open()) { // If the file is opened successfully
-        string line; // A variable to store each line
-        while (getline(file, line)) { // While there are lines to read
-            if (line == email) { // If the line matches the email
-                file.close(); // Close the file
-                return true; // Return true
+    ifstream file("users.txt"); 
+    if (file.is_open()) { 
+        string line; 
+        while (getline(file, line)) { 
+            if (line == email) { 
+                file.close(); 
+                return true; 
             }
         }
-        file.close(); // Close the file
+        file.close(); 
     }
-    return false; // Return false
+    return false; 
 }
 
 // A function to create a new user and store it in the file
 void create_user(string name, string email, string password) {
-    ofstream file("users.txt", ios::app); // Open the file for appending
-    if (file.is_open()) { // If the file is opened successfully
-        file << email << endl; // Write the email to the file
-        file << name << endl; // Write the name to the file
-        file << password << endl; // Write the password to the file
-        file << 0 << endl; // Write the number of tickets to the file
-        file.close(); // Close the file
+    ofstream file("users.txt", ios::app); 
+    if (file.is_open()) { 
+        file << email << endl; 
+        file << name << endl; 
+        file << password << endl;
+        file << 0 << endl; 
+        file.close(); 
     }
 }
 
 // A function to get the user details from the file
 User get_user(string email) {
-    User user; // A variable to store the user details
-    ifstream file("users.txt"); // Open the file for reading
-    if (file.is_open()) { // If the file is opened successfully
-        string line; // A variable to store each line
-        while (getline(file, line)) { // While there are lines to read
-            if (line == email) { // If the line matches the email
-                user.email = email; // Set the user email
-                getline(file, user.name); // Get the user name
-                getline(file, user.password); // Get the user password
-                int n; // A variable to store the number of tickets
-                file >> n; // Read the number of tickets
-                file.ignore(); // Ignore the newline character
-                for (int i = 0; i < n; i++) { // For each ticket
-                    string ticket; // A variable to store the ticket
-                    getline(file, ticket); // Get the ticket
-                    user.tickets.push_back(ticket); // Add the ticket to the user tickets
+    User user; 
+    ifstream file("users.txt"); 
+    if (file.is_open()) { 
+        string line; 
+        while (getline(file, line)) {
+            if (line == email) { 
+                user.email = email;
+                getline(file, user.name); 
+                getline(file, user.password); 
+                int n; 
+                file >> n;
+                file.ignore(); 
+                for (int i = 0; i < n; i++) { 
+                    string ticket;
+                    getline(file, ticket);
+                    user.tickets.push_back(ticket); 
                 }
-                break; // Break the loop
+                break; 
             }
         }
-        file.close(); // Close the file
+        file.close();
     }
-    return user; // Return the user
+    return user; 
 }
 
 // A function to update the user details in the file
 void update_user(User user) {
-    ifstream file("users.txt"); // Open the file for reading
-    ofstream temp("temp.txt"); // Open a temporary file for writing
-    if (file.is_open() && temp.is_open()) { // If both files are opened successfully
-        string line; // A variable to store each line
-        while (getline(file, line)) { // While there are lines to read
-            if (line == user.email) { // If the line matches the user email
-                temp << user.email << endl; // Write the user email to the temp file
-                temp << user.name << endl; // Write the user name to the temp file
-                temp << user.password << endl; // Write the user password to the temp file
-                temp << user.tickets.size() << endl; // Write the number of tickets to the temp file
-                for (string ticket : user.tickets) { // For each ticket
-                    temp << ticket << endl; // Write the ticket to the temp file
+    ifstream file("users.txt"); 
+    ofstream temp("temp.txt");
+    if (file.is_open() && temp.is_open()) {
+        string line; //
+        while (getline(file, line)) { 
+            if (line == user.email) {
+                temp << user.email << endl; 
+                temp << user.name << endl; 
+                temp << user.password << endl;
+                temp << user.tickets.size() << endl; 
+                for (string ticket : user.tickets) { 
+                    temp << ticket << endl; 
                 }
-            } else { // If the line does not match the user email
-                temp << line << endl; // Write the line to the temp file
+            } else { 
+                temp << line << endl; 
             }
         }
-        file.close(); // Close the file
-        temp.close(); // Close the temp file
-        remove("users.txt"); // Remove the original file
-        rename("temp.txt", "users.txt"); // Rename the temp file to the original file
+        file.close(); 
+        temp.close(); 
+        remove("users.txt"); 
+        rename("temp.txt", "users.txt"); 
     }
 }
 
@@ -109,28 +109,28 @@ void update_user(User user) {
 void display_flights(vector<Flight> flights) {
     cout << "The available flights are:\n";
     cout << "Flight Number\tOrigin\tDestination\tCapacity\tBooked\tPrice\n";
-    for (Flight flight : flights) { // For each flight
+    for (Flight flight : flights) { 
         cout << flight.flight_number << "\t" << flight.origin << "\t" << flight.destination << "\t" << flight.capacity << "\t" << flight.booked << "\t" << flight.price << endl;
     }
 }
 
 // A function to book a flight for a user
 void book_flight(vector<Flight>& flights, User& user) {
-    display_flights(flights); // Display the available flights
+    display_flights(flights);
     cout << "Enter the flight number you want to book: ";
-    string fn; // A variable to store the flight number
-    cin >> fn; // Read the flight number
-    bool found = false; // A variable to indicate if the flight is found
-    for (Flight& flight : flights) { // For each flight
-        if (flight.flight_number == fn) { // If the flight number matches
-            found = true; // Set found to true
-            if (flight.booked < flight.capacity) { // If the flight is not full
-                flight.booked++; // Increment the booked count
-                user.tickets.push_back(fn); // Add the flight number to the user tickets
+    string fn;
+    cin >> fn; 
+    bool found = false; 
+    for (Flight& flight : flights) {
+        if (flight.flight_number == fn) { 
+            found = true; 
+            if (flight.booked < flight.capacity) { 
+                flight.booked++; 
+                user.tickets.push_back(fn);
                 cout << "You have successfully booked the flight " << fn << ".\n";
                 cout << "The ticket price is " << flight.price << ".\n";
-                update_user(user); // Update the user details in the file
-            } else { // If the flight is full
+                update_user(user); 
+            } else { 
                 cout << "Sorry, the flight " << fn << " is full.\n";
             }
             break; // Break the loop
@@ -148,17 +148,17 @@ void cancel_flight(vector<Flight>& flights, User& user) {
         cout << ticket << endl;
     }
     cout << "Enter the flight number you want to cancel: ";
-    string fn; // A variable to store the flight number
-    cin >> fn; // Read the flight number
-    bool found = false; // A variable to indicate if the ticket is found
-    for (int i = 0; i < user.tickets.size(); i++) { // For each ticket
-        if (user.tickets[i] == fn) { // If the ticket matches the flight number
-            found = true; // Set found to true
-            user.tickets.erase(user.tickets.begin() + i); // Erase the ticket from the user tickets
-            for (Flight& flight : flights) { // For each flight
-                if (flight.flight_number == fn) { // If the flight number matches
-                    flight.booked--; // Decrement the booked count
-                    break; // Break the loop
+    string fn; 
+    cin >> fn; 
+    bool found = false;
+    for (int i = 0; i < user.tickets.size(); i++) { 
+        if (user.tickets[i] == fn) {
+            found = true;
+            user.tickets.erase(user.tickets.begin() + i);
+            for (Flight& flight : flights) {
+                if (flight.flight_number == fn) { 
+                    flight.booked--; 
+                    break;
                 }
             }
             cout << "You have successfully canceled the flight " << fn << ".\n";
@@ -213,49 +213,50 @@ int main() {
     cout << "1. Yes\n";
     cout << "2. No\n";
     cout << "Enter your choice: ";
-    int choice; // A variable to store the user choice
-    cin >> choice; // Read the user choice
-    switch (choice) { // Switch on the user choice
-        case 1: // If the user has an account
+    int choice; 
+    
+    cin >> choice; 
+    switch (choice) {
+        case 1:
             cout << "Enter your email: ";
-            string email; // A variable to store the user email
-            cin >> email; // Read the user email
-            if (user_exists(email)) { // If the user exists in the file
+            string email;
+            cin >> email;
+            if (user_exists(email)) { 
                 cout << "Enter your password: ";
-                string password; // A variable to store the user password
-                cin >> password; // Read the user password
-                User user = get_user(email); // Get the user details from the file
-                if (user.password == password) { // If the password matches
-                    display_menu(flights, user); // Call the display menu function
-                } else { // If the password does not match
+                string password; 
+                cin >> password; 
+                User user = get_user(email); 
+                if (user.password == password) {
+                    display_menu(flights, user); 
+                } else { 
                     cout << "Wrong password. Please try again.\n";
                 }
-            } else { // If the user does not exist in the file
+            } else { 
                 cout << "No account found with this email. Please create an account.\n";
             }
-            break; // Break the switch
+            break; 
        // case 2: // If the user does not have an account
             cout << "Enter your name: ";
-            string name; // A variable to store the user name
-            cin >> name; // Read the user name
+            string name; 
+            cin >> name; 
             cout << "Enter your email: ";
-           // string email; // A variable to store the user email
-            cin >> email; // Read the user email
-            if (!user_exists(email)) { // If the user does not exist in the file
+           /
+            cin >> email; 
+            if (!user_exists(email)) {
                 cout << "Enter your password: ";
-                string password; // A variable to store the user password
-                cin >> password; // Read the user password
-                create_user(name, email, password); // Create a new user and store it in the file
-                User user = get_user(email); // Get the user details from the file
-                display_menu(flights, user); // Call the display menu function
-            } else { // If the user exists in the file
+                string password; 
+                cin >> password; 
+                create_user(name, email, password); 
+                User user = get_user(email); 
+                display_menu(flights, user); 
+            } else { 
                 cout << "An account already exists with this email. Please login.\n";
             }
-            break; // Break the switch
-        //default: // If the user enters an invalid choice
+            break;
+        /
             cout << "Invalid choice. Please try again.\n";
-            break; // Break the switch
+            break; 
     }
-    return 0; // Return from the main function
+    return 0; 
 }
 
